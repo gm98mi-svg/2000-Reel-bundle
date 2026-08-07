@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reel Bundle — Ready-to-Post AI Reels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12111a;
+    --paper:#f7f4ee;
+    --panel:#1c1a26;
+    --amber:#ffb84d;
+    --coral:#ff6f61;
+    --violet:#8b7cf6;
+    --line:rgba(247,244,238,0.14);
+    --muted:rgba(247,244,238,0.62);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Manrope', sans-serif;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Sora', sans-serif;
+    letter-spacing:-0.02em;
+  }
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(18,17,26,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:64px;
+  }
+  .brand{font-family:'Sora',sans-serif; font-weight:800; font-size:1.05rem; letter-spacing:-0.01em;}
+  .brand span{color:var(--amber);}
+  .nav-cta{
+    background:var(--amber); color:#1c1206; font-weight:700; font-size:0.85rem;
+    padding:9px 18px; border-radius:100px; text-decoration:none;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:72px 0 60px;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:-20% -10% auto -10%;
+    height:520px;
+    background:radial-gradient(60% 60% at 30% 20%, rgba(139,124,246,0.35), transparent 70%),
+               radial-gradient(50% 50% at 80% 10%, rgba(255,111,97,0.28), transparent 70%);
+    filter:blur(10px);
+    pointer-events:none;
+  }
+  .hero-grid{
+    position:relative;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:48px;
+    align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.75rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--amber);
+    border:1px solid rgba(255,184,77,0.35);
+    padding:6px 12px; border-radius:100px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{content:"●"; font-size:0.6rem;}
+  h1{
+    font-size:clamp(2.2rem, 4.6vw, 3.4rem);
+    font-weight:800;
+    line-height:1.06;
+    margin-bottom:20px;
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(90deg, var(--amber), var(--coral));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero p.lead{
+    font-size:1.05rem;
+    color:var(--muted);
+    max-width:46ch;
+    margin-bottom:32px;
+  }
+  .hero-actions{display:flex; align-items:center; gap:18px; flex-wrap:wrap;}
+  .btn-primary{
+    display:inline-flex; align-items:center; gap:10px;
+    background:linear-gradient(90deg, var(--coral), var(--amber));
+    color:#1c1206;
+    font-weight:800; font-size:1rem;
+    padding:16px 30px;
+    border-radius:100px;
+    text-decoration:none;
+    box-shadow:0 12px 30px -10px rgba(255,111,97,0.55);
+    transition:transform .15s ease;
+  }
+  .btn-primary:hover{transform:translateY(-2px);}
+  .price-note{font-size:0.85rem; color:var(--muted);}
+  .price-note strong{color:var(--paper);}
+
+  /* phone mockup */
+  .phone-stage{
+    position:relative;
+    display:flex; justify-content:center;
+  }
+  .phone{
+    width:260px; height:520px;
+    background:var(--panel);
+    border-radius:36px;
+    border:6px solid #2a2836;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 40px 80px -30px rgba(0,0,0,0.7);
+  }
+  .phone::before{
+    content:"";
+    position:absolute; top:16px; left:50%; transform:translateX(-50%);
+    width:64px; height:8px; border-radius:8px;
+    background:#0d0c13;
+    z-index:3;
+  }
+  .reel-frame{
+    position:absolute; inset:0;
+    background:
+      linear-gradient(180deg, rgba(18,17,26,0) 0%, rgba(18,17,26,0.85) 100%),
+      linear-gradient(160deg, #8b7cf6 0%, #ff6f61 55%, #ffb84d 100%);
+  }
+  .reel-overlay{
+    position:absolute; bottom:0; left:0; right:0; padding:20px 16px 24px;
+  }
+  .reel-overlay .handle{font-size:0.75rem; font-weight:700; margin-bottom:6px;}
+  .reel-overlay .cap{font-size:0.7rem; color:rgba(247,244,238,0.85); line-height:1.4;}
+  .play-badge{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:56px; height:56px; border-radius:50%;
+    background:rgba(18,17,26,0.35);
+    border:1.5px solid rgba(247,244,238,0.6);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .play-badge svg{width:20px; height:20px;}
+  .floating-tag{
+    position:absolute;
+    background:var(--paper); color:var(--ink);
+    font-size:0.72rem; font-weight:800;
+    padding:8px 14px; border-radius:12px;
+    box-shadow:0 14px 30px -12px rgba(0,0,0,0.5);
+  }
+  .tag-1{top:56px; left:-18px;}
+  .tag-2{bottom:70px; right:-22px;}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:64px 0;}
+  .section-head{max-width:52ch; margin-bottom:40px;}
+  .kicker{
+    font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--violet);
+    margin-bottom:10px;
+  }
+  h2{font-size:clamp(1.5rem, 3vw, 2.1rem); font-weight:800;}
+
+  /* ---------- WHAT'S INSIDE ---------- */
+  .inside-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:18px;
+    overflow:hidden;
+  }
+  .inside-card{
+    background:var(--panel);
+    padding:26px 22px;
+  }
+  .inside-card .num{
+    font-family:'Sora',sans-serif; font-weight:800; font-size:1.6rem;
+    color:var(--amber); margin-bottom:12px; display:block;
+  }
+  .inside-card h3{font-size:1rem; font-weight:700; margin-bottom:8px;}
+  .inside-card p{font-size:0.88rem; color:var(--muted);}
+
+  /* ---------- PREVIEW STRIP ---------- */
+  .preview-strip{
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+    gap:12px;
+  }
+  .preview-thumb{
+    aspect-ratio:9/16;
+    border-radius:14px;
+    background:linear-gradient(160deg, var(--violet), var(--coral));
+    position:relative;
+    overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .preview-thumb::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(18,17,26,0), rgba(18,17,26,0.55));
+  }
+  .preview-thumb .p-icon{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:32px; height:32px; border-radius:50%;
+    background:rgba(18,17,26,0.4);
+    display:flex; align-items:center; justify-content:center;
+    z-index:2;
+  }
+  .preview-thumb .p-icon svg{width:12px; height:12px;}
+  .preview-note{
+    margin-top:16px; font-size:0.82rem; color:var(--muted);
+  }
+
+  /* ---------- WHO'S THIS FOR ---------- */
+  .who-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:16px;
+  }
+  .who-item{
+    display:flex; gap:14px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px;
+  }
+  .who-item .dot{
+    flex-shrink:0;
+    width:34px; height:34px; border-radius:10px;
+    background:rgba(255,184,77,0.14);
+    color:var(--amber);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800;
+  }
+  .who-item p{font-size:0.9rem; color:var(--muted);}
+  .who-item strong{color:var(--paper); display:block; margin-bottom:2px; font-size:0.95rem;}
+
+  /* ---------- PRICING ---------- */
+  .price-card{
+    position:relative;
+    background:linear-gradient(160deg, #23202f, #1c1a26);
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:44px;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:36px;
+    align-items:center;
+    overflow:hidden;
+  }
+  .price-card::before{
+    content:"";
+    position:absolute; top:-40%; right:-20%;
+    width:60%; height:180%;
+    background:radial-gradient(circle, rgba(255,111,97,0.18), transparent 70%);
+  }
+  .price-card h3{font-size:1.4rem; margin-bottom:10px;}
+  .price-card ul{list-style:none; margin:18px 0 0;}
+  .price-card li{
+    font-size:0.88rem; color:var(--muted);
+    padding-left:22px; position:relative; margin-bottom:8px;
+  }
+  .price-card li::before{
+    content:"✓"; position:absolute; left:0; color:var(--amber); font-weight:800;
+  }
+  .price-box{
+    background:var(--ink);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:28px;
+    text-align:center;
+  }
+  .old-price{
+    font-size:0.9rem; color:var(--muted); text-decoration:line-through;
+  }
+  .new-price{
+    font-family:'Sora',sans-serif; font-weight:800; font-size:2.4rem;
+    margin:4px 0 4px;
+  }
+  .new-price sup{font-size:1rem; margin-right:2px; font-weight:700; vertical-align:super;}
+  .price-box .btn-primary{width:100%; justify-content:center; margin-top:16px;}
+  .guarantee{font-size:0.75rem; color:var(--muted); margin-top:12px;}
+
+  /* ---------- FAQ ---------- */
+  .faq-item{
+    border-top:1px solid var(--line);
+    padding:20px 0;
+  }
+  .faq-item summary{
+    cursor:pointer;
+    font-weight:700; font-size:0.98rem;
+    list-style:none;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{
+    content:"+";
+    font-size:1.4rem; color:var(--amber); font-weight:400;
+    transition:transform .2s ease;
+  }
+  .faq-item[open] summary::after{transform:rotate(45deg);}
+  .faq-item p{
+    margin-top:10px; font-size:0.88rem; color:var(--muted); max-width:60ch;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:36px 0;
+    text-align:center;
+  }
+  footer p{font-size:0.82rem; color:var(--muted);}
+  footer a{color:var(--amber); text-decoration:none;}
+
+  /* ---------- EDIT MARKERS (remove or keep, purely visual for you) ---------- */
+  .editme{
+    outline:1px dashed rgba(255,184,77,0.5);
+    outline-offset:4px;
+  }
+
+  @media (max-width: 860px){
+    .hero-grid{grid-template-columns:1fr; gap:44px;}
+    .phone-stage{order:-1;}
+    .inside-grid{grid-template-columns:1fr;}
+    .preview-strip{grid-template-columns:repeat(3, 1fr);}
+    .who-grid{grid-template-columns:1fr;}
+    .price-card{grid-template-columns:1fr; padding:28px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Reel<span>Bundle</span>.</div>
+    <a class="nav-cta" href="#pricing">Bundle Le Lo</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">100+ Ready-to-Post Reels</div>
+      <h1>Editing chhod, <em>seedha post karo.</em></h1>
+      <p class="lead">Family &amp; lifestyle story reels ka ek poora bundle — script, visuals aur voice-over sab ready. Bas apne channel pe upload karo aur views badhte dekho.</p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#pricing">
+          Bundle Unlock Karo
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="price-note">One-time payment · <strong>Instant download</strong></div>
+      </div>
+    </div>
+
+    <div class="phone-stage">
+      <div class="phone">
+        <div class="reel-frame">
+          <div class="play-badge">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5z" fill="#f7f4ee"/></svg>
+          </div>
+          <div class="reel-overlay">
+            <div class="handle">@yourchannel</div>
+            <div class="cap">"Jab ghar ki sabse choti bahu ne..." 🎬</div>
+          </div>
+        </div>
+      </div>
+      <div class="floating-tag tag-1">4.2M views 👀</div>
+      <div class="floating-tag tag-2">Voice-over included 🎙️</div>
+    </div>
+  </div>
+</header>
+
+<section id="inside">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Bundle Ke Andar</div>
+      <h2>Ek click, poora content stack.</h2>
+    </div>
+    <div class="inside-grid">
+      <div class="inside-card">
+        <span class="num">01</span>
+        <h3>100+ Story Reels</h3>
+        <p>Family &amp; lifestyle format mein ready-made vertical reels, HD quality mein.</p>
+      </div>
+      <div class="inside-card">
+        <span class="num">02</span>
+        <h3>Hinglish Voice-over</h3>
+        <p>Natural sounding Hinglish narration har reel ke saath already laga hua.</p>
+      </div>
+      <div class="inside-card">
+        <span class="num">03</span>
+        <h3>Caption + Hashtags</h3>
+        <p>Har reel ke sath ready caption aur trending hashtags copy-paste ke liye.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="preview">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Ek Jhalak</div>
+      <h2>Kaisi dikhti hain reels.</h2>
+    </div>
+    <div class="preview-strip">
+      <div class="preview-thumb"><div class="p-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5z" fill="#f7f4ee"/></svg></div></div>
+      <div class="preview-thumb"><div class="p-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5z" fill="#f7f4ee"/></svg></div></div>
+      <div class="preview-thumb"><div class="p-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5z" fill="#f7f4ee"/></svg></div></div>
+      <div class="preview-thumb"><div class="p-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5z" fill="#f7f4ee"/></svg></div></div>
+      <div class="preview-thumb"><div class="p-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5z" fill="#f7f4ee"/></svg></div></div>
+    </div>
+    <p class="preview-note">Yeh placeholder thumbnails hain — inki jagah apni asli reel ke screenshots laga dena (neeche "kaise edit karein" mein bataya hai).</p>
+  </div>
+</section>
+
+<section id="who">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Kiske Liye Hai</div>
+      <h2>Agar tum inmein se ho, yeh bundle tumhare liye hai.</h2>
+    </div>
+    <div class="who-grid">
+      <div class="who-item">
+        <div class="dot">1</div>
+        <p><strong>Naye YouTube Shorts creators</strong>Jinke paas editing ka time nahi hai par consistent post karna hai.</p>
+      </div>
+      <div class="who-item">
+        <div class="dot">2</div>
+        <p><strong>Faceless channel chalane wale</strong>Bina camera ke saamne aaye content chahiye.</p>
+      </div>
+      <div class="who-item">
+        <div class="dot">3</div>
+        <p><strong>Reselling karne wale</strong>Apne naam se resell karke extra income banana chahte ho.</p>
+      </div>
+      <div class="who-item">
+        <div class="dot">4</div>
+        <p><strong>Multiple channel owners</strong>Ek se zyada channels ko content se bharna hai jaldi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="price-card">
+      <div>
+        <div class="kicker">Limited Time</div>
+        <h3>Complete Reel Bundle</h3>
+        <p style="color:var(--muted); font-size:0.9rem;">100+ ready reels, voice-over, captions — sab ek saath, ek hi baar payment.</p>
+        <ul>
+          <li>Lifetime access, jitni baar chaho download karo</li>
+          <li>Purchase ke turant baad email pe download link</li>
+          <li>Personal + resale, dono use ke liye</li>
+          <li>Naya content har mahine free update mein</li>
+        </ul>
+      </div>
+      <div class="price-box">
+        <div class="old-price">₹999</div>
+        <div class="new-price"><sup>₹</sup>299</div>
+        <div style="font-size:0.78rem; color:var(--muted);">one-time payment</div>
+        <a class="btn-primary" href="#" target="_blank" rel="noopener">
+          Ab Kharido
+        </a>
+        <div class="guarantee">Payment secure hai · Razorpay se</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Sawal Jawab</div>
+      <h2>Kuch common sawaal.</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Bundle download kaise milega?</summary>
+        <p>Payment successful hote hi tumhare diye gaye email pe download link automatically bhej diya jaata hai. Spam folder bhi ek baar check kar lena.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Kya main yeh reels resell kar sakta hoon?</summary>
+        <p>Haan, personal aur resale dono use ke liye allowed hai — apne channel pe post karo ya apne naam se aage bhi bech sakte ho.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Refund milega agar pasand na aaye?</summary>
+        <p>Digital product hone ki wajah se refund possible nahi hai, lekin koi bhi issue ho to email pe bataओ, help ki jaayegi.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Koi sawaal ho to mail karo — <a href="mailto:youremail@example.com">youremail@example.com</a></p>
+    <p style="margin-top:8px;">© 2026 ReelBundle. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
