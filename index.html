@@ -34,7 +34,14 @@ footer{border-top:1px solid #29243a;padding:30px 0 90px;color:#777389;text-align
 .rv-cd b{display:block;font-size:28px;color:#ffd21a;font-variant-numeric:tabular-nums;line-height:1.1}
 .rv-cd span{font-size:11px;color:#9993aa}
 .offer .rv-cd{margin:0 auto 20px;background:#17142a}
-</style></head><body>
+</style><!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1518780712245573');fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1518780712245573&ev=PageView&noscript=1"></noscript>
+<!-- End Meta Pixel -->
+</head><body>
 <div class="wrap">
 <nav><div class="logo">▶ GM <b>DIGITAL</b></div><a class="navbtn" href="#" data-buy target="_blank">BUY NOW ₹99</a></nav>
 <section class="hero"><div class="badge">🔥 LIMITED-TIME DIGITAL OFFER</div>
@@ -65,7 +72,10 @@ footer{border-top:1px solid #29243a;padding:30px 0 90px;color:#777389;text-align
 <script>
 var SUPERPROFILE_URL="https://superprofile.bio/vp/2000--viral-cartoon-reels-bundle-–-ready-to-upload---only-₹99";
 var YT_ID="SYowzdWsr-s";
-document.querySelectorAll("a[data-buy]").forEach(function(a){a.href=SUPERPROFILE_URL;});
+document.querySelectorAll("a[data-buy]").forEach(function(a){
+  a.href=SUPERPROFILE_URL;
+  a.addEventListener("click",function(){try{fbq("track","InitiateCheckout",{value:99,currency:"INR"});}catch(e){}});
+});
 function rvPlay(e){
   if(e)e.preventDefault();
   var a=document.getElementById("rvPlay");
